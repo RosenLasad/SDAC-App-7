@@ -1,0 +1,25 @@
+SDAC App — Supabase setup notes
+
+Use:
+- supabase_phase1_setup.sql
+
+This version includes:
+- profiles table
+- billing_customers
+- subscriptions
+- promo_redemptions
+- billing_events
+- trigger for profile creation after signup
+- RLS base
+- admin registry view
+- RPC current_user_has_premium_access()
+
+Important logic:
+- Admin / owner => always premium access
+- active / trialing subscription => premium access
+- past_due => premium access for 3 days from last_event_at
+- after that => free
+
+Frontend note:
+- the app now calls current_user_has_premium_access() from the browser
+- so if you already ran an older SQL version, re-run this file to add/refresh the function

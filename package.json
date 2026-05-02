@@ -1,0 +1,9 @@
+{
+  "name": "sdac-app",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.8",
+    "stripe": "^17.7.0"
+  }
+}

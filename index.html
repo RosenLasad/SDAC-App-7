@@ -1,0 +1,1338 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SDAC App</title>
+  <meta name="description" content="SDAC App: strumenti pratici per videomaker e studenti di cinema." />
+  <meta name="theme-color" content="#b31217" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="SDAC App" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icon-app-192.png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__left">
+      <a class="chip chip--icon" href="https://www.sdac.it" target="_blank" rel="noopener" aria-label="Apri sdac.it">
+        <img src="assets/icon-sdac.png" alt="" />
+      </a>
+      <a class="chip chip--icon" href="https://www.sdacmagazine.com" target="_blank" rel="noopener" aria-label="Apri sdacmagazine.com">
+        <img src="assets/icon-magazine.png" alt="" />
+      </a>
+    </div>
+
+    <div class="topbar__center">
+      <!-- Metterai tu l’immagine in /assets -->
+      <img class="brand" src="assets/sdac-app-title.png" alt="SDAC App" onerror="this.style.display='none'; document.querySelector('.brandFallback').style.display='block';" />
+      <div class="brandFallback" style="display:none;">SDAC App</div>
+    </div>
+
+    <div class="topbar__right">
+      <button class="topbarAccount" id="topbarAccount" type="button" hidden aria-live="polite" aria-haspopup="dialog" aria-label="Apri pannello Utente" title="Apri pannello Utente">—</button>
+      <button class="chip chip--button chip--icon" id="btnSettings" type="button" aria-label="Impostazioni">
+        <img src="assets/icon-settings.png" alt="" />
+      </button>
+      <button class="chip chip--primary chip--icon" id="btnSubscribe" type="button" aria-label="Abbonati">
+        <img src="assets/icon-subscribe.png" alt="" />
+      </button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="menu" id="toolsMenu">
+      <div class="menu__header" id="toolsMenuHeader">
+        <h2 class="menu__title">Strumenti</h2>
+        <button class="menu__toggle" id="menuToggle" type="button" aria-expanded="true" aria-controls="toolsMenuBody" aria-label="Chiudi pannello Strumenti">
+          <span class="menu__toggleIcon menu__toggleIcon--desktop" id="menuToggleDesktop" aria-hidden="true">◀</span>
+          <span class="menu__toggleIcon menu__toggleIcon--mobile" id="menuToggleMobile" aria-hidden="true">▲</span>
+          <span class="sr-only">Apri o chiudi pannello Strumenti</span>
+        </button>
+      </div>
+
+      <div class="menu__body" id="toolsMenuBody">
+        <nav class="menu__list" aria-label="Menu principale">
+          <button class="menu__item" data-view="home">Menu principale</button>
+          <button class="menu__item" data-view="start">Inizia Produzione</button>
+          <button class="menu__item" data-view="storyboard">Storyboard</button>
+          <button class="menu__item" data-view="lessons">Lezioni ONLINE</button>
+          <button class="menu__item" data-view="dictionary">Dizionario del videomaker</button>
+          <button class="menu__item" data-view="notebook">Taccuino film</button>
+          <button class="menu__item" data-view="shop">Shopping</button>
+        </nav>
+
+        <div class="menu__footer">
+          <div class="badge" id="premiumBadge">Piano: Free</div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="content">
+      <!-- HOME -->
+      <section class="panel is-active" data-panel="home">
+        <h1>Benvenuto in SDAC App</h1>
+        <p class="lead">
+          La cassetta degli attrezzi del videomaker: strumenti rapidi, pratici e sempre con te.
+        </p>
+        <div class="homeDashboard">
+          <section class="card homeRecentCard" aria-labelledby="homeRecentTitle">
+            <div class="homeCardHead">
+              <div>
+                <h3 id="homeRecentTitle">Ultimi lavori modificati</h3>
+                <p class="muted">Riprendi rapidamente produzioni, storyboard e appunti aggiornati di recente.</p>
+              </div>
+              <button class="chip chip--button homeRefreshBtn" id="homeRefreshRecent" type="button">Aggiorna</button>
+            </div>
+
+            <div id="homeRecentList" class="homeRecentList" aria-live="polite">
+              <div class="homeEmptyState">
+                <strong>Nessun lavoro recente</strong>
+                <span>Inizia creando un Piano di Produzione o uno Storyboard.</span>
+                <div class="homeEmptyActions">
+                  <button class="chip chip--primary" type="button" data-view-jump="start" data-home-trigger="ppNew">Nuovo Piano</button>
+                  <button class="chip chip--button" type="button" data-view-jump="storyboard" data-home-trigger="sbNewScene">Nuovo Storyboard</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="homeQuickArea" aria-labelledby="homeQuickTitle">
+            <div class="homeSectionTitleRow">
+              <h2 id="homeQuickTitle">Azioni rapide</h2>
+              <p class="muted">Scegli subito lo strumento giusto per il lavoro che devi fare.</p>
+            </div>
+
+            <div class="homeToolGrid">
+              <button class="card homeToolCard homeToolCard--production" type="button" data-view-jump="start">
+                <span class="homeToolIcon" aria-hidden="true">🎬</span>
+                <span class="homeToolText">
+                  <strong>Piano di Produzione</strong>
+                  <small>Organizza progetto, troupe, attrezzatura e documento finale.</small>
+                </span>
+              </button>
+
+              <button class="card homeToolCard homeToolCard--storyboard" type="button" data-view-jump="storyboard">
+                <span class="homeToolIcon" aria-hidden="true">▧</span>
+                <span class="homeToolText">
+                  <strong>Storyboard</strong>
+                  <small>Disegna shot, decoupage, note e indicazioni di regia.</small>
+                </span>
+              </button>
+
+              <button class="card homeToolCard homeToolCard--dictionary" type="button" data-view-jump="dictionary">
+                <span class="homeToolIcon" aria-hidden="true">A-Z</span>
+                <span class="homeToolText">
+                  <strong>Dizionario</strong>
+                  <small>Cerca rapidamente termini tecnici del videomaker.</small>
+                </span>
+              </button>
+
+              <button class="card homeToolCard homeToolCard--notebook" type="button" data-view-jump="notebook">
+                <span class="homeToolIcon" aria-hidden="true">★</span>
+                <span class="homeToolText">
+                  <strong>Taccuino film</strong>
+                  <small>Gestisci film visti, da vedere, preferiti e liste.</small>
+                </span>
+              </button>
+
+              <button class="card homeToolCard homeToolCard--lessons" type="button" data-view-jump="lessons">
+                <span class="homeToolIcon" aria-hidden="true">▶</span>
+                <span class="homeToolText">
+                  <strong>Lezioni ONLINE</strong>
+                  <small>Spazio per video riservati, materiali e percorsi didattici.</small>
+                </span>
+              </button>
+
+              <button class="card homeToolCard homeToolCard--shop" type="button" data-view-jump="shop">
+                <span class="homeToolIcon" aria-hidden="true">⌁</span>
+                <span class="homeToolText">
+                  <strong>Shopping</strong>
+                  <small>Gadget, risorse e prodotti SDAC in arrivo.</small>
+                </span>
+              </button>
+            </div>
+          </section>
+
+          <section class="card card--install homeInstallCard">
+            <div>
+              <h3>Installa SDAC App</h3>
+              <p id="installAppText" class="muted">Puoi aggiungere SDAC App alla schermata Home o al desktop.</p>
+            </div>
+            <div class="panel__actions">
+              <button class="chip chip--primary" id="btnInstallApp" type="button">Installa app</button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- START (Piano di Produzione) -->
+      <section class="panel" data-panel="start">
+        <div class="panel__header">
+          <h1><span id="ppHeaderTitle">Piano di Produzione</span></h1>
+          <div class="panel__actions">
+            <button class="chip chip--button" id="ppList" type="button">Archivio</button>
+            <button class="chip chip--button" id="ppSavePlan" type="button">Salva PdP</button>
+            <button class="chip chip--primary" id="ppNew" type="button">Nuovo</button>
+          </div>
+        </div>
+
+        <div id="ppHome">
+          <div class="grid2 ppGridHome">
+            <div class="card">
+              <h3>Come funziona</h3>
+              <p class="muted">
+                Compila il Piano di Produzione in 4 step:
+              </p>
+              <ul class="ppBullets">
+                <li><strong>Step 1 — Idea e base del progetto</strong><br>Titolo, sinossi, soggetto, tipologia, personaggi e ambienti.</li>
+                <li><strong>Step 2 — Troupe e attrezzatura</strong><br>Ruoli della troupe, nomi e materiali necessari.</li>
+                <li><strong>Step 3 — Produzione e fornitori</strong><br>Sponsor, produttori, casting, noleggi e catering.</li>
+                <li><strong>Step 4 — Anteprima e documento finale</strong><br>Controlla il Piano di Produzione, salvalo e condividilo.</li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <h3>Piani salvati</h3>
+              <div id="ppSavedList" class="ppSavedList muted">
+                Nessun piano salvato (ancora). Quando attiveremo il salvataggio finale, li vedrai qui.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizard -->
+        <div id="ppWizard" class="ppWizard" hidden>
+          <div class="ppProgress" aria-label="Avanzamento">
+            <div class="ppProgress__bar" id="ppProgressBar" style="width:25%"></div>
+            <div class="ppProgress__labels" id="ppProgressLabels">
+              <button type="button" data-step="1" class="is-active" aria-label="Vai allo Step 1" aria-current="step">1</button><button type="button" data-step="2" aria-label="Vai allo Step 2">2</button><button type="button" data-step="3" aria-label="Vai allo Step 3">3</button><button type="button" data-step="4" aria-label="Vai allo Step 4">4</button>
+            </div>
+          </div>
+
+          <div class="ppStep is-active" data-step="1">
+            <h2 class="ppStepTitle">Step 1 — Idea e base del progetto</h2>
+
+            <div class="ppGrid">
+            <div class="card">
+              <h3>Informazioni</h3>
+
+              <form id="ppFormStep1" class="ppForm">
+                <div class="ppField">
+                  <div class="ppField__top">
+                    <label for="ppTitle">Titolo</label>
+                    <span class="ppCount" id="ppTitleCount">0/80</span>
+                  </div>
+                  <input id="ppTitle" class="input" type="text" maxlength="80" placeholder="Es. Cortometraggio - Genova di notte" />
+                </div>
+
+                <div class="ppField">
+                  <div class="ppField__top">
+                    <label for="ppSynopsis">Sinossi</label>
+                    <span class="ppCount" id="ppSynopsisCount">0/280</span>
+                  </div>
+                  <textarea id="ppSynopsis" class="input" rows="3" maxlength="280" placeholder="2–3 righe: di cosa parla il progetto?"></textarea>
+                </div>
+
+                <div class="ppField">
+                  <div class="ppField__top">
+                    <label for="ppSubject">Soggetto</label>
+                    <span class="ppCount" id="ppSubjectCount">0/1200</span>
+                  </div>
+                  <textarea id="ppSubject" class="input" rows="9" maxlength="1200" placeholder="10–12 righe: racconta la storia / struttura / punti chiave."></textarea>
+                </div>
+
+                <div class="ppInline">
+                  <label class="ppCheck">
+                    <input id="ppScript" type="checkbox" />
+                    <span>Aggiungerai sceneggiatura</span>
+                  </label>
+
+                  <div class="ppSelectWrap">
+                    <label for="ppType" class="ppSelectLabel">Tipologia</label>
+                    <select id="ppType" class="input">
+                      <option value="" selected>Scegli…</option>
+                      <option value="cortometraggio">Cortometraggio</option>
+                      <option value="film">Film</option>
+                      <option value="documentario">Documentario</option>
+                      <option value="spot">Spot</option>
+                      <option value="reel">Reel</option>
+                      <option value="web">Web</option>
+                      <option value="altro">Altro</option>
+                    </select>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="card ppStep1Groups">
+              <div class="ppGroup ppGroup--step1">
+                <button class="ppGroup__head" id="ppCharsGroupHead" type="button" aria-expanded="true">
+                  <div class="ppGroup__title">Personaggi</div>
+                  <div class="ppGroup__right">
+                    <span class="ppGroup__count" id="ppCharsGroupCount">0</span>
+                    <span class="ppGroup__chev" id="ppCharsGroupChev">▲</span>
+                  </div>
+                </button>
+                <div class="ppGroup__body" id="ppCharsGroupBody">
+                  <div class="ppAddRow">
+                    <input id="ppCharName" class="input" type="text" maxlength="40" placeholder="Nome personaggio…" />
+                    <button class="btnSmall" id="ppCharAdd" type="button">Aggiungi</button>
+                  </div>
+                  <div id="ppChars" class="ppList" hidden></div>
+                </div>
+              </div>
+
+              <div class="ppGroup ppGroup--step1">
+                <button class="ppGroup__head" id="ppEnvsGroupHead" type="button" aria-expanded="true">
+                  <div class="ppGroup__title">Ambienti</div>
+                  <div class="ppGroup__right">
+                    <span class="ppGroup__count" id="ppEnvsGroupCount">0</span>
+                    <span class="ppGroup__chev" id="ppEnvsGroupChev">▲</span>
+                  </div>
+                </button>
+                <div class="ppGroup__body" id="ppEnvsGroupBody">
+                  <div class="ppAddRow ppAddRow--env">
+                    <input id="ppEnvName" class="input" type="text" maxlength="60" placeholder="Ambiente (es. INT. Cucina)" />
+                    <input id="ppEnvScene" class="input ppScene" type="text" maxlength="12" placeholder="Scena #" />
+                    <button class="btnSmall" id="ppEnvAdd" type="button">Aggiungi</button>
+                  </div>
+                  <div id="ppEnvs" class="ppList" hidden></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+            <div class="ppActions">
+            <button class="chip chip--button" id="ppClear" type="button">Annulla / Pulisci</button>
+            <div class="ppActions__right">
+              <button class="chip chip--button" id="ppToHome" type="button">Menu principale</button>
+              <button class="chip chip--primary" id="ppNext" type="button">Prosegui (Step 2)</button>
+            </div>
+          </div>
+          </div>
+
+          <div class="ppStep" data-step="2">
+            <h2 class="ppStepTitle">Step 2 — Troupe e Attrezzatura</h2>
+
+            <div class="ppGrid">
+              <div class="card">
+                <div class="ppCardHeader">
+                  <h3>Troupe</h3>
+                  <button class="btnSmall" id="ppCrewAddCustom" type="button">Aggiungi ruolo</button>
+                </div>
+                <div id="ppCrew" class="ppChecks"></div>
+              </div>
+
+              <div class="card">
+                <div class="ppCardHeader">
+                  <h3>Attrezzatura</h3>
+                  <button class="btnSmall" id="ppEqAddCustom" type="button">Aggiungi attrezzo</button>
+                </div>
+                <div id="ppEquipment" class="ppEquipment"></div>
+              </div>
+            </div>
+
+            <div class="ppActions">
+              <button class="chip chip--button" id="ppClear2" type="button">Annulla / Pulisci</button>
+              <div class="ppActions__right">
+                <button class="chip chip--button" id="ppPrev2" type="button">Indietro (Step 1)</button>
+                <button class="chip chip--button" id="ppToHome2" type="button">Menu principale</button>
+                <button class="chip chip--primary" id="ppNext2" type="button">Prosegui (Step 3)</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ppStep" data-step="3">
+            <h2 class="ppStepTitle">Step 3 — Produzione e fornitori</h2>
+
+            <div class="ppGrid">
+              <div class="card ppStep3Groups">
+                <div class="ppGroup ppGroup--step3">
+                  <button class="ppGroup__head" id="ppSponsorsGroupHead" type="button" aria-expanded="true">
+                    <div class="ppGroup__title">Sponsor</div>
+                    <div class="ppGroup__right">
+                      <span class="ppGroup__count" id="ppSponsorsGroupCount">0</span>
+                      <span class="ppGroup__chev" id="ppSponsorsGroupChev">▲</span>
+                    </div>
+                  </button>
+                  <div class="ppGroup__body" id="ppSponsorsGroupBody">
+                    <div class="ppAddRow">
+                      <input id="ppSponsorName" class="input" type="text" maxlength="80" placeholder="Nome sponsor…" />
+                      <button class="btnSmall" id="ppSponsorAdd" type="button">Aggiungi</button>
+                    </div>
+                    <div id="ppSponsors" class="ppList" hidden></div>
+                  </div>
+                </div>
+
+                <div class="ppGroup ppGroup--step3">
+                  <button class="ppGroup__head" id="ppProducersGroupHead" type="button" aria-expanded="true">
+                    <div class="ppGroup__title">Produttori</div>
+                    <div class="ppGroup__right">
+                      <span class="ppGroup__count" id="ppProducersGroupCount">0</span>
+                      <span class="ppGroup__chev" id="ppProducersGroupChev">▲</span>
+                    </div>
+                  </button>
+                  <div class="ppGroup__body" id="ppProducersGroupBody">
+                    <div class="ppAddRow">
+                      <input id="ppProducerName" class="input" type="text" maxlength="80" placeholder="Nome produttore…" />
+                      <button class="btnSmall" id="ppProducerAdd" type="button">Aggiungi</button>
+                    </div>
+                    <div id="ppProducers" class="ppList" hidden></div>
+                  </div>
+                </div>
+
+                <div class="ppGroup ppGroup--step3">
+                  <button class="ppGroup__head" id="ppCastingGroupHead" type="button" aria-expanded="true">
+                    <div class="ppGroup__title">Agenzie casting</div>
+                    <div class="ppGroup__right">
+                      <span class="ppGroup__count" id="ppCastingGroupCount">0</span>
+                      <span class="ppGroup__chev" id="ppCastingGroupChev">▲</span>
+                    </div>
+                  </button>
+                  <div class="ppGroup__body" id="ppCastingGroupBody">
+                    <div class="ppAddRow">
+                      <input id="ppCastingName" class="input" type="text" maxlength="80" placeholder="Nome agenzia casting…" />
+                      <button class="btnSmall" id="ppCastingAdd" type="button">Aggiungi</button>
+                    </div>
+                    <div id="ppCastingAgencies" class="ppList" hidden></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card ppStep3Groups">
+                <div class="ppGroup ppGroup--step3">
+                  <button class="ppGroup__head" id="ppRentEqGroupHead" type="button" aria-expanded="true">
+                    <div class="ppGroup__title">Noleggio attrezzatura</div>
+                    <div class="ppGroup__right">
+                      <span class="ppGroup__count" id="ppRentEqGroupCount">0</span>
+                      <span class="ppGroup__chev" id="ppRentEqGroupChev">▲</span>
+                    </div>
+                  </button>
+                  <div class="ppGroup__body" id="ppRentEqGroupBody">
+                    <div class="ppAddRow">
+                      <input id="ppRentEqName" class="input" type="text" maxlength="80" placeholder="Azienda noleggio attrezzatura…" />
+                      <button class="btnSmall" id="ppRentEqAdd" type="button">Aggiungi</button>
+                    </div>
+                    <div id="ppRentEquipment" class="ppList" hidden></div>
+                  </div>
+                </div>
+
+                <div class="ppGroup ppGroup--step3">
+                  <button class="ppGroup__head" id="ppRentTrGroupHead" type="button" aria-expanded="true">
+                    <div class="ppGroup__title">Noleggio trasporti</div>
+                    <div class="ppGroup__right">
+                      <span class="ppGroup__count" id="ppRentTrGroupCount">0</span>
+                      <span class="ppGroup__chev" id="ppRentTrGroupChev">▲</span>
+                    </div>
+                  </button>
+                  <div class="ppGroup__body" id="ppRentTrGroupBody">
+                    <div class="ppAddRow">
+                      <input id="ppRentTrName" class="input" type="text" maxlength="80" placeholder="Azienda noleggio trasporti…" />
+                      <button class="btnSmall" id="ppRentTrAdd" type="button">Aggiungi</button>
+                    </div>
+                    <div id="ppRentTransport" class="ppList" hidden></div>
+                  </div>
+                </div>
+
+                <div class="ppGroup ppGroup--step3">
+                  <button class="ppGroup__head" id="ppCateringGroupHead" type="button" aria-expanded="true">
+                    <div class="ppGroup__title">Catering</div>
+                    <div class="ppGroup__right">
+                      <span class="ppGroup__count" id="ppCateringGroupCount">0</span>
+                      <span class="ppGroup__chev" id="ppCateringGroupChev">▲</span>
+                    </div>
+                  </button>
+                  <div class="ppGroup__body" id="ppCateringGroupBody">
+                    <div class="ppAddRow">
+                      <input id="ppCateringName" class="input" type="text" maxlength="80" placeholder="Azienda catering…" />
+                      <button class="btnSmall" id="ppCateringAdd" type="button">Aggiungi</button>
+                    </div>
+                    <div id="ppCatering" class="ppList" hidden></div>
+                  </div>
+                </div>
+
+                <div class="ppGroup ppGroup--step3">
+                  <button class="ppGroup__head" id="ppShootGroupHead" type="button" aria-expanded="true">
+                    <div class="ppGroup__title">Date / periodi di ripresa</div>
+                    <div class="ppGroup__right">
+                      <span class="ppGroup__count" id="ppShootGroupCount">0</span>
+                      <span class="ppGroup__chev" id="ppShootGroupChev">▲</span>
+                    </div>
+                  </button>
+                  <div class="ppGroup__body" id="ppShootGroupBody">
+                    <div class="ppAddRow ppAddRow--shooting">
+                      <input id="ppShootStart" class="input ppDateInput" type="date" />
+                      <input id="ppShootEnd" class="input ppDateInput" type="date" />
+                      <input id="ppShootScenes" class="input ppShootScenes" type="text" maxlength="60" placeholder="Scene (es. 3, 5, 8)" />
+                      <button class="btnSmall" id="ppShootAdd" type="button">Aggiungi</button>
+                    </div>
+                    <div id="ppShootingPeriods" class="ppList" hidden></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ppActions">
+              <button class="chip chip--button" id="ppClear3" type="button">Annulla / Pulisci</button>
+              <div class="ppActions__right">
+                <button class="chip chip--button" id="ppPrev3" type="button">Indietro (Step 2)</button>
+                <button class="chip chip--button" id="ppToHome3" type="button">Menu principale</button>
+                <button class="chip chip--primary" id="ppNext3" type="button">Prosegui (Step 4)</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ppStep" data-step="4">
+            <h2 class="ppStepTitle">Step 4 — Anteprima e documento finale</h2>
+
+            <div class="ppStep4Wrap">
+              <div class="ppDocHint muted">
+              </div>
+
+              <div id="ppDocPreview" class="ppDocPreview" aria-label="Anteprima Piano di Produzione">
+                <!-- Pagine generate via JS -->
+              </div>
+            </div>
+
+            <div class="ppActions">
+              <div class="ppActions__left">
+                <button class="chip chip--button" id="ppSaveDoc" type="button">Salva documento</button>
+                <button class="chip chip--button" id="ppShareDoc" type="button">Condividi</button>
+              </div>
+              <div class="ppActions__right">
+                <button class="chip chip--button" id="ppClear4" type="button">Annulla / Pulisci</button>
+                <button class="chip chip--button" id="ppPrev4" type="button">Indietro (Step 3)</button>
+                <button class="chip chip--button" id="ppToHome4" type="button">Menu principale</button>
+              </div>
+            </div>
+
+            <!-- Viewer / Zoom -->
+            <dialog id="ppDocDialog" class="ppDocDialog">
+              <div class="ppDocDialog__top">
+                <div class="ppDocDialog__title">Piano di Produzione — Anteprima</div>
+                <div class="ppDocDialog__actions">
+                  <button class="chip chip--button" id="ppZoomOut" type="button">−</button>
+                  <button class="chip chip--button" id="ppZoomReset" type="button">100%</button>
+                  <button class="chip chip--button" id="ppZoomIn" type="button">+</button>
+                  <button class="chip chip--button" id="ppDocDialogClose" type="button">Chiudi</button>
+                </div>
+              </div>
+              <div class="ppDocDialog__body">
+                <div id="ppDocZoomArea" class="ppDocZoomArea">
+                  <!-- Pagine clonate via JS -->
+                </div>
+              </div>
+            </dialog>
+          </div>
+
+
+        </div>
+
+        <!-- Elenco Produzioni (salvataggi PdP) -->
+        <dialog id="ppPlansDialog" class="dialog">
+          <form method="dialog" class="dialog__form" id="ppPlansForm">
+            <div class="ppPlansHeader">
+              <h3>Elenco Produzioni</h3>
+              <button class="chip chip--button" id="ppPlansClose" type="button">Chiudi</button>
+            </div>
+
+            <div class="ppPlansTools">
+              <input id="ppPlansSearch" class="input" type="search" placeholder="Cerca per nome..." />
+              <label class="ppPlansToggle">
+                <input id="ppPlansOnlyFav" type="checkbox" />
+                <span>Solo preferiti</span>
+              </label>
+            </div>
+
+            <div id="ppPlansList" class="ppPlansList">
+              <!-- render via JS -->
+            </div>
+
+            <p class="muted ppTiny" style="margin-top:10px;">
+              Suggerimento: apri una produzione, compila e premi “Salva PdP” per aggiornare. Se cambi nome, puoi salvarla come nuova.
+            </p>
+          </form>
+        </dialog>
+
+
+        <!-- Salva PdP (nome + salva/aggiorna) -->
+        <dialog id="ppSaveDialog" class="dialog">
+          <form method="dialog" class="dialog__form" id="ppSaveForm">
+            <div class="ppPlansHeader">
+              <h3 id="ppSaveTitle">Salva Piano di Produzione</h3>
+              <button class="chip chip--button" id="ppSaveClose" type="button">Chiudi</button>
+            </div>
+
+            <div class="formRow" style="margin-top:6px;">
+              <label for="ppSaveName">Nome</label>
+              <input id="ppSaveName" class="input" autocomplete="off" placeholder="Es. PdP Spot — Roma" />
+            </div>
+
+            <div id="ppSaveInfo" class="muted ppTiny" style="margin-top:8px;"></div>
+
+            <div class="dialog__actions ppSaveActions">
+              <button class="chip chip--button" id="ppSaveCancel" type="button">Annulla</button>
+              <button class="chip chip--primary" id="ppSaveConfirm" type="button">Salva</button>
+            </div>
+          </form>
+        </dialog>
+
+      </section>
+
+      <!-- STORYBOARD (minimale) -->
+      <section class="panel panel--storyboard" data-panel="storyboard">
+        <div class="panel__header storyboardPanelHeader">
+          <div class="storyboardTitleRow">
+            <h1>Storyboard</h1>
+            <button class="chip chip--button" id="sbOpenLibrary" type="button">Archivio</button>
+            <button class="chip chip--button" id="sbNewScene" type="button">Nuovo</button>
+          </div>
+          <div class="panel__actions storyboardTopActions" aria-label="Azioni storyboard">
+            <button class="chip chip--button storyboardActionIconBtn" id="sbSaveScene" type="button" title="Salva scena" aria-label="Salva scena">
+              <span class="storyboardActionIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M5 4h11l3 3v13H5z"></path>
+                  <path d="M8 4v6h8V4"></path>
+                  <path d="M8 20v-6h8v6"></path>
+                </svg>
+              </span>
+              <span class="sr-only">Salva scena</span>
+            </button>
+            <button class="chip chip--button storyboardActionIconBtn" id="sbShareScene" type="button" title="Condividi" aria-label="Condividi">
+              <span class="storyboardActionIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <circle cx="18" cy="5" r="2.5"></circle>
+                  <circle cx="6" cy="12" r="2.5"></circle>
+                  <circle cx="18" cy="19" r="2.5"></circle>
+                  <path d="M8.2 11 15.7 6.4"></path>
+                  <path d="M8.2 13 15.7 17.6"></path>
+                </svg>
+              </span>
+              <span class="sr-only">Condividi</span>
+            </button>
+            <button class="chip chip--button storyboardActionIconBtn" id="sbExportSingle" type="button" title="Esporta shot PNG" aria-label="Esporta shot PNG">
+              <span class="storyboardActionIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <rect x="4" y="5" width="16" height="14" rx="2"></rect>
+                  <circle cx="9" cy="10" r="1.5"></circle>
+                  <path d="m7 17 4-4 3 3 3-3 3 4"></path>
+                </svg>
+              </span>
+              <span class="sr-only">Esporta shot PNG</span>
+            </button>
+            <button class="chip chip--primary storyboardActionIconBtn" id="sbExportZip" type="button" title="Esporta scena ZIP" aria-label="Esporta scena ZIP">
+              <span class="storyboardActionIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M7 4h8l4 4v11a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"></path>
+                  <path d="M15 4v5h5"></path>
+                  <path d="M11 7h2"></path>
+                  <path d="M11 10h2"></path>
+                  <path d="M11 13h2"></path>
+                  <path d="M11 16h2"></path>
+                  <path d="M10 8h1"></path>
+                  <path d="M12 9h1"></path>
+                  <path d="M10 14h1"></path>
+                  <path d="M12 15h1"></path>
+                </svg>
+              </span>
+              <span class="sr-only">Esporta scena ZIP</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card storyboardSceneCard">
+          <div class="storyboardSceneField">
+            <label for="sbSceneName">Scena</label>
+            <input id="sbSceneName" class="input" type="text" maxlength="80" placeholder="Inserisci nome scena" />
+          </div>
+        </div>
+
+        <div class="grid2 storyboardGrid">
+          <div class="storyboardMainColumn">
+            <div class="card storyboardToolsCard">
+              <details class="storyboardToolsDetails" open>
+                <summary class="storyboardToolsSummary">
+                  <span>Strumenti</span>
+                  <span class="muted storyboardToolsHint">Apri / chiudi</span>
+                </summary>
+
+                <div class="storyboardToolsBody">
+                  <div class="storyboardToolsInline storyboardToolsInline--compact">
+                    <div class="storyboardQuickTools" role="radiogroup" aria-label="Strumento storyboard">
+                      <button class="chip chip--button storyboardQuickToolBtn storyboardToolOption is-active" id="sbToolHand" type="button" data-tool-value="hand" role="radio" aria-checked="true" title="Mano" aria-label="Mano">
+                        <span class="storyboardQuickToolBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M8 12V6a1.5 1.5 0 0 1 3 0v4"></path>
+                            <path d="M11 10V5a1.5 1.5 0 0 1 3 0v5"></path>
+                            <path d="M14 10V6a1.5 1.5 0 0 1 3 0v6"></path>
+                            <path d="M17 12V9a1.5 1.5 0 0 1 3 0v6c0 3.3-2.7 6-6 6h-1.2a6 6 0 0 1-4.8-2.4L5 14.5A1.5 1.5 0 0 1 7.3 12.6L8 13"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <button class="chip chip--button storyboardQuickToolBtn storyboardToolOption" id="sbToolPen" type="button" data-tool-value="pen" role="radio" aria-checked="false" title="Matita" aria-label="Matita">
+                        <span class="storyboardQuickToolBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="m4 20 4.5-1 9-9-3.5-3.5-9 9L4 20z"></path>
+                            <path d="m13.5 6.5 3.5 3.5"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <button class="chip chip--button storyboardQuickToolBtn storyboardToolOption" id="sbToolEraser" type="button" data-tool-value="eraser" role="radio" aria-checked="false" title="Gomma" aria-label="Gomma">
+                        <span class="storyboardQuickToolBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="m7 15 6.8-6.8a2 2 0 0 1 2.8 0l2.2 2.2a2 2 0 0 1 0 2.8L12 20H7a2 2 0 0 1-1.4-.6l-1-1a2 2 0 0 1 0-2.8L7 13"></path>
+                            <path d="M10 20h10"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <button class="chip chip--button storyboardQuickToolBtn storyboardToolOption" id="sbToolHighlighter" type="button" data-tool-value="highlighter" role="radio" aria-checked="false" title="Evidenziatore" aria-label="Evidenziatore">
+                        <span class="storyboardQuickToolBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="m6 16 8-8 4 4-8 8H6v-4z"></path>
+                            <path d="M14 8 18 12"></path>
+                            <path d="M5 20h6"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <div class="storyboardToolPopoverWrap storyboardToolPopoverWrap--color">
+                        <button class="chip chip--button storyboardToolControl storyboardToolControl--color" id="sbColorToggle" type="button" title="Colore" aria-label="Colore">
+                          <span class="storyboardColorSwatch" id="sbColorSwatch" aria-hidden="true"></span>
+                        </button>
+                        <input id="sbColor" class="storyboardToolColorInput" type="color" value="#111111" aria-label="Colore storyboard" />
+                      </div>
+                      <div class="storyboardToolPopoverWrap storyboardToolPopoverWrap--size">
+                        <button class="chip chip--button storyboardToolControl storyboardToolControl--size" id="sbSizeToggle" type="button" aria-expanded="false" aria-haspopup="true" title="Spessore" aria-label="Spessore">
+                          <span class="storyboardToolControl__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" focusable="false">
+                              <path d="M5 18h14"></path>
+                              <path d="M7 14h10"></path>
+                              <path d="M9 10h6"></path>
+                              <path d="M11 6h2"></path>
+                            </svg>
+                          </span>
+                          <span class="storyboardToolControl__value storyboardToolControl__value--size" id="sbSizeLabel">4</span>
+                        </button>
+                        <div class="storyboardToolPopover storyboardToolPopover--size" id="sbSizePopover" hidden>
+                          <input id="sbSize" class="storyboardToolRange storyboardToolRange--vertical" type="range" min="1" max="18" value="4" aria-label="Spessore tratto" orient="vertical" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="storyboardToolsGroups">
+                    <div class="storyboardGuideTools storyboardGuideTools--figures" aria-label="Figure storyboard">
+                      <div class="storyboardAspectWrap">
+                        <button class="chip chip--button storyboardGuideBtn" id="sbAspectToggle" type="button" aria-pressed="false" title="Aspect Ratio" aria-label="Aspect Ratio">
+                          <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" focusable="false">
+                              <rect x="3" y="6" width="18" height="12" rx="1.5"></rect>
+                              <path d="M3 9.5h18"></path>
+                              <path d="M7.5 6v12"></path>
+                            </svg>
+                          </span>
+                        </button>
+                        <div class="storyboardAspectMenu" id="sbAspectMenu" hidden>
+                          <button class="btnSmall storyboardAspectOption is-active" type="button" data-aspect-value="off">Off</button>
+                          <button class="btnSmall storyboardAspectOption" type="button" data-aspect-value="4:3">4:3</button>
+                          <button class="btnSmall storyboardAspectOption" type="button" data-aspect-value="3:2">3:2</button>
+                          <button class="btnSmall storyboardAspectOption" type="button" data-aspect-value="16:9">16:9</button>
+                          <button class="btnSmall storyboardAspectOption" type="button" data-aspect-value="1.85:1">1.85:1</button>
+                          <button class="btnSmall storyboardAspectOption" type="button" data-aspect-value="2.39:1">2.39:1</button>
+                        </div>
+                      </div>
+                      <button class="chip chip--button storyboardGuideBtn" id="sbThirdsToggle" type="button" aria-pressed="false" title="Mostra o nascondi la griglia della Regola dei terzi" aria-label="Regola dei terzi">
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M8 3v18M16 3v18M3 8h18M3 16h18M3 3h18v18H3z"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <button class="chip chip--button storyboardGuideBtn" id="sbAddRect" type="button" title="Aggiungi rettangolo" aria-label="Aggiungi rettangolo">
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <rect x="4" y="6" width="16" height="12" rx="1.5"></rect>
+                          </svg>
+                        </span>
+                      </button>
+                      <button class="chip chip--button storyboardGuideBtn" id="sbAddTriangle" type="button" title="Aggiungi triangolo" aria-label="Aggiungi triangolo">
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M12 5 20 19H4z"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <div class="storyboardAspectWrap storyboardShapeMenuWrap">
+                        <button class="chip chip--button storyboardGuideBtn" id="sbCircleToggle" type="button" aria-pressed="false" title="Cerchio" aria-label="Cerchio">
+                          <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" focusable="false">
+                              <circle cx="12" cy="12" r="7"></circle>
+                            </svg>
+                          </span>
+                        </button>
+                        <div class="storyboardAspectMenu storyboardShapeMenu" id="sbCircleMenu" hidden>
+                          <button class="btnSmall storyboardCircleOption" type="button" data-circle-value="circle">Cerchio</button>
+                          <button class="btnSmall storyboardCircleOption" type="button" data-circle-value="circleCross">Cerchio + croce</button>
+                        </div>
+                      </div>
+                      <div class="storyboardAspectWrap storyboardShapeMenuWrap">
+                        <button class="chip chip--button storyboardGuideBtn" id="sbAddLine" type="button" aria-expanded="false" aria-haspopup="true" title="Aggiungi linea" aria-label="Aggiungi linea">
+                          <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" focusable="false">
+                              <path d="M5 19 19 5"></path>
+                              <circle cx="5" cy="19" r="1.5"></circle>
+                              <circle cx="19" cy="5" r="1.5"></circle>
+                            </svg>
+                          </span>
+                        </button>
+                        <div class="storyboardAspectMenu storyboardShapeMenu" id="sbLineMenu" hidden>
+                          <button class="btnSmall storyboardLineOption is-active" type="button" data-line-value="solid">Linea continua</button>
+                          <button class="btnSmall storyboardLineOption" type="button" data-line-value="dashed">Linea tratteggiata</button>
+                        </div>
+                      </div>
+                      <div class="storyboardAspectWrap storyboardShapeMenuWrap">
+                        <button class="chip chip--button storyboardGuideBtn" id="sbAddArrow" type="button" aria-expanded="false" aria-haspopup="true" title="Aggiungi freccia" aria-label="Aggiungi freccia">
+                          <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" focusable="false">
+                              <path d="M5 12h11"></path>
+                              <path d="M12 7l5 5-5 5"></path>
+                              <circle cx="5" cy="12" r="1.5"></circle>
+                            </svg>
+                          </span>
+                        </button>
+                        <div class="storyboardAspectMenu storyboardShapeMenu" id="sbArrowMenu" hidden>
+                          <button class="btnSmall storyboardArrowOption is-active" type="button" data-arrow-value="single">Freccia singola</button>
+                          <button class="btnSmall storyboardArrowOption" type="button" data-arrow-value="double">Freccia doppia</button>
+                        </div>
+                      </div>
+                      <button class="chip chip--button storyboardGuideBtn" id="sbAddText" type="button" title="Aggiungi testo" aria-label="Aggiungi testo">
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M5 6h14"></path>
+                            <path d="M12 6v12"></path>
+                            <path d="M8 18h8"></path>
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                    <div class="storyboardGuideTools storyboardGuideTools--actions" aria-label="Azioni storyboard">
+                      <button class="chip chip--button storyboardGuideBtn storyboardGuideBtn--neutral" id="sbUndo" type="button" title="Undo" aria-label="Undo">
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M9 7 4 12l5 5"></path>
+                            <path d="M20 12H4"></path>
+                            <path d="M20 12c0-3.5-2.5-6-6-6h-3"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <button class="chip chip--button storyboardGuideBtn storyboardGuideBtn--neutral" id="sbRedo" type="button" title="Ripristina" aria-label="Ripristina">
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="m15 7 5 5-5 5"></path>
+                            <path d="M4 12h16"></path>
+                            <path d="M4 12c0-3.5 2.5-6 6-6h3"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <button class="chip chip--button storyboardGuideBtn storyboardGuideBtn--neutral" id="sbDuplicateShape" type="button" title="Duplica figura selezionata" aria-label="Duplica figura selezionata" disabled>
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <rect x="9" y="9" width="10" height="10" rx="1.5"></rect>
+                            <path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <button class="chip chip--button storyboardGuideBtn storyboardGuideBtn--danger" id="sbDeleteShape" type="button" title="Cancella figura selezionata" aria-label="Cancella figura selezionata" disabled>
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M4 7h16"></path>
+                            <path d="M9 7V5h6v2"></path>
+                            <path d="M8 7l1 12h6l1-12"></path>
+                            <path d="M10 11v5"></path>
+                            <path d="M14 11v5"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <button class="chip chip--button storyboardGuideBtn storyboardGuideBtn--warning" id="sbClear" type="button" title="Pulisci shot" aria-label="Pulisci shot">
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M4 16h11"></path>
+                            <path d="M4 12h14"></path>
+                            <path d="M4 8h16"></path>
+                            <path d="M17 17l3 3"></path>
+                            <path d="M15 19h2"></path>
+                            <path d="M19 15v2"></path>
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </div>
+
+            <div class="card storyboardDecoupageCard">
+              <details class="storyboardDecoupageDetails" id="sbDecoupageDetails">
+                <summary class="storyboardDecoupageSummary">
+                  <span>Decoupage</span>
+                  <span class="muted storyboardDecoupageHint">Apri / chiudi</span>
+                </summary>
+                <div class="storyboardDecoupageBody">
+                  <div class="storyboardDecoupageLayout">
+                    <div class="storyboardDecoupageTools" aria-label="Strumenti decoupage">
+                      <button class="chip chip--button storyboardGuideBtn" id="sbDecAddCamera" type="button" title="Aggiungi camera" aria-label="Aggiungi camera">
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <rect x="5" y="8" width="10" height="8" rx="1.5"></rect>
+                            <path d="M15 10l4-2v8l-4-2z"></path>
+                            <path d="M7 6h4"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <button class="chip chip--button storyboardGuideBtn" id="sbDecAddPerson" type="button" title="Aggiungi personaggio" aria-label="Aggiungi personaggio">
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <circle cx="12" cy="8" r="3"></circle>
+                            <path d="M12 11v7"></path>
+                            <path d="M9 21l3-3 3 3"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <button class="chip chip--button storyboardGuideBtn" id="sbDecAddDolly" type="button" title="Aggiungi carrello" aria-label="Aggiungi carrello">
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M5 16 19 8"></path>
+                            <circle cx="7" cy="18" r="1.6"></circle>
+                            <circle cx="17" cy="12" r="1.6"></circle>
+                            <path d="M9 18h6"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <button class="chip chip--button storyboardGuideBtn" id="sbDecAddLdc" type="button" title="Aggiungi LDC" aria-label="Aggiungi LDC">
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M4 18 20 6"></path>
+                            <path d="M7 19h4"></path>
+                          </svg>
+                        </span>
+                      </button>
+                      <div class="storyboardAspectWrap storyboardShapeMenuWrap storyboardDecQuickWrap">
+                        <button class="chip chip--button storyboardGuideBtn storyboardGuideBtn--neutral storyboardDecQuickBtn" id="sbDecLetterToggle" type="button" aria-expanded="false" aria-haspopup="true" title="Inserisci lettera" aria-label="Inserisci lettera">A</button>
+                        <div class="storyboardAspectMenu storyboardShapeMenu storyboardDecQuickMenu" id="sbDecLetterMenu" hidden>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="A">A</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="B">B</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="C">C</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="D">D</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="E">E</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="F">F</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="G">G</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="H">H</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="I">I</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="J">J</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="K">K</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="L">L</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="M">M</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="N">N</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="O">O</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="P">P</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="Q">Q</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="R">R</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="S">S</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="T">T</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="U">U</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="V">V</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="W">W</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="X">X</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="Y">Y</button>
+                          <button class="btnSmall storyboardDecLetterOption" type="button" data-letter-value="Z">Z</button>
+                        </div>
+                      </div>
+                      <div class="storyboardAspectWrap storyboardShapeMenuWrap storyboardDecQuickWrap">
+                        <button class="chip chip--button storyboardGuideBtn storyboardGuideBtn--neutral storyboardDecQuickBtn" id="sbDecNumberToggle" type="button" aria-expanded="false" aria-haspopup="true" title="Inserisci numero" aria-label="Inserisci numero">1</button>
+                        <div class="storyboardAspectMenu storyboardShapeMenu storyboardDecQuickMenu" id="sbDecNumberMenu" hidden>
+                          <button class="btnSmall storyboardDecNumberOption" type="button" data-number-value="1">1</button>
+                          <button class="btnSmall storyboardDecNumberOption" type="button" data-number-value="2">2</button>
+                          <button class="btnSmall storyboardDecNumberOption" type="button" data-number-value="3">3</button>
+                          <button class="btnSmall storyboardDecNumberOption" type="button" data-number-value="4">4</button>
+                          <button class="btnSmall storyboardDecNumberOption" type="button" data-number-value="5">5</button>
+                          <button class="btnSmall storyboardDecNumberOption" type="button" data-number-value="6">6</button>
+                          <button class="btnSmall storyboardDecNumberOption" type="button" data-number-value="7">7</button>
+                          <button class="btnSmall storyboardDecNumberOption" type="button" data-number-value="8">8</button>
+                          <button class="btnSmall storyboardDecNumberOption" type="button" data-number-value="9">9</button>
+                          <button class="btnSmall storyboardDecNumberOption" type="button" data-number-value="0">0</button>
+                        </div>
+                      </div>
+                      <button class="chip chip--button storyboardGuideBtn storyboardGuideBtn--neutral" id="sbDecAddMdp" type="button" title="Aggiungi MDP" aria-label="Aggiungi MDP">MDP</button>
+                      <button class="chip chip--button storyboardGuideBtn storyboardGuideBtn--warning" id="sbDecClear" type="button" title="Pulisci decoupage" aria-label="Pulisci decoupage">
+                        <span class="storyboardGuideBtn__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M4 16h11"></path>
+                            <path d="M4 12h14"></path>
+                            <path d="M4 8h16"></path>
+                            <path d="M17 17l3 3"></path>
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                    <div class="storyboardDecoupageStage">
+                      <div class="canvasWrap storyboardDecoupageWrap">
+                        <canvas id="sbDecCanvas" width="900" height="900" aria-label="Canvas decoupage"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </div>
+
+            <div class="card storyboardCanvasCard">
+              <div class="storyboardCanvasHeader">
+                <div class="storyboardCanvasHeader__main">
+                  <h3 id="sbCanvasTitle">Disegno — Shot 1</h3>
+                  <div class="storyboardShotNameField">
+                    <label for="sbShotName">Shot</label>
+                    <input id="sbShotName" class="input" type="text" maxlength="80" placeholder="Inserisci nome shot" />
+                  </div>
+                </div>
+              </div>
+              <div class="storyboardCanvasStage">
+                <div class="canvasWrap">
+                  <canvas id="sbCanvas" width="1200" height="700" aria-label="Canvas storyboard"></canvas>
+                </div>
+                <div class="storyboardThirdsOverlay" id="sbThirdsOverlay" hidden aria-hidden="true"></div>
+                <div class="storyboardAspectOverlay" id="sbAspectOverlay" hidden aria-hidden="true">
+                  <div class="storyboardAspectMask storyboardAspectMask--top"></div>
+                  <div class="storyboardAspectMask storyboardAspectMask--right"></div>
+                  <div class="storyboardAspectMask storyboardAspectMask--bottom"></div>
+                  <div class="storyboardAspectMask storyboardAspectMask--left"></div>
+                </div>
+                <div class="storyboardTextToolbar" id="sbTextToolbar" hidden>
+                  <div class="storyboardTextToolbar__sizeWrap">
+                    <label class="sr-only" for="sbTextSize">Dimensione testo</label>
+                    <button class="chip chip--button storyboardTextToolbar__btn storyboardTextToolbar__sizeStep" id="sbTextSizeDown" type="button" aria-label="Riduci dimensione testo">−</button>
+                    <input id="sbTextSize" class="storyboardTextToolbar__size" type="number" min="12" max="120" step="1" value="42" aria-label="Dimensione testo" />
+                    <button class="chip chip--button storyboardTextToolbar__btn storyboardTextToolbar__sizeStep" id="sbTextSizeUp" type="button" aria-label="Aumenta dimensione testo">+</button>
+                  </div>
+                  <label class="sr-only" for="sbTextFont">Font</label>
+                  <select id="sbTextFont" class="storyboardTextToolbar__select" aria-label="Font testo">
+                    <option value="Arial">Arial</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Trebuchet MS">Trebuchet</option>
+                    <option value="Courier New">Courier</option>
+                    <option value="Verdana">Verdana</option>
+                  </select>
+                  <div class="storyboardTextToolbar__popoverWrap">
+                    <button class="chip chip--button storyboardTextToolbar__btn storyboardTextToolbar__alignToggle" id="sbTextAlignToggle" type="button" aria-expanded="false" aria-haspopup="true" data-align="left" title="Allineamento testo" aria-label="Allineamento testo">
+                      <span class="storyboardAlignIcon" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                      </span>
+                    </button>
+                    <div class="storyboardTextToolbar__popover storyboardTextToolbar__alignMenu" id="sbTextAlignMenu" hidden role="menu" aria-label="Allineamento testo">
+                      <button class="chip chip--button storyboardTextToolbar__btn storyboardTextToolbar__alignOption" id="sbTextAlignLeft" type="button" data-align="left" aria-pressed="false" title="Allinea a sinistra" aria-label="Allinea a sinistra">
+                        <span class="storyboardAlignIcon" aria-hidden="true"><span></span><span></span><span></span></span>
+                      </button>
+                      <button class="chip chip--button storyboardTextToolbar__btn storyboardTextToolbar__alignOption" id="sbTextAlignCenter" type="button" data-align="center" aria-pressed="false" title="Allinea al centro" aria-label="Allinea al centro">
+                        <span class="storyboardAlignIcon" aria-hidden="true"><span></span><span></span><span></span></span>
+                      </button>
+                      <button class="chip chip--button storyboardTextToolbar__btn storyboardTextToolbar__alignOption" id="sbTextAlignRight" type="button" data-align="right" aria-pressed="false" title="Allinea a destra" aria-label="Allinea a destra">
+                        <span class="storyboardAlignIcon" aria-hidden="true"><span></span><span></span><span></span></span>
+                      </button>
+                    </div>
+                  </div>
+                  <label class="sr-only" for="sbTextColor">Colore testo</label>
+                  <input id="sbTextColor" class="storyboardTextToolbar__color" type="color" value="#111111" aria-label="Colore testo" />
+                  <button class="chip chip--button storyboardTextToolbar__btn" id="sbTextBold" type="button" aria-pressed="false" title="Grassetto" aria-label="Grassetto">B</button>
+                  <button class="chip chip--button storyboardTextToolbar__btn storyboardTextToolbar__btn--italic" id="sbTextItalic" type="button" aria-pressed="false" title="Corsivo" aria-label="Corsivo">I</button>
+                  <button class="chip chip--button storyboardTextToolbar__btn storyboardTextToolbar__btn--underline" id="sbTextUnderline" type="button" aria-pressed="false" title="Sottolineato" aria-label="Sottolineato">U</button>
+                  <button class="chip chip--button storyboardTextToolbar__btn" id="sbTextLabel" type="button" aria-pressed="false" title="Etichetta" aria-label="Etichetta">▣</button>
+                  <div class="storyboardTextToolbar__popoverWrap">
+                    <button class="chip chip--button storyboardTextToolbar__btn storyboardTextToolbar__opacityToggle" id="sbTextOpacityToggle" type="button" aria-expanded="false" aria-haspopup="true" title="Opacità testo" aria-label="Opacità testo">100%</button>
+                    <div class="storyboardTextToolbar__popover storyboardTextToolbar__opacityPopover" id="sbTextOpacityPopover" hidden>
+                      <label class="sr-only" for="sbTextOpacity">Opacità testo</label>
+                      <input id="sbTextOpacity" class="storyboardTextToolbar__range storyboardTextToolbar__range--vertical" type="range" min="20" max="100" step="5" value="100" aria-label="Opacità testo" orient="vertical" />
+                      <div class="storyboardTextToolbar__opacityValue" id="sbTextOpacityValue">100%</div>
+                    </div>
+                  </div>
+                  <button class="chip chip--button storyboardTextToolbar__btn" id="sbTextDuplicate" type="button" title="Duplica testo" aria-label="Duplica testo">⧉</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card storyboardNotesCard">
+              <details class="storyboardNotesDetails" id="sbNotesDetails">
+                <summary class="storyboardNotesSummary">
+                  <span>Notes</span>
+                  <span class="muted storyboardNotesHint">Apri / chiudi</span>
+                </summary>
+                <div class="storyboardNotesBody">
+                  <div class="storyboardNotesGrid">
+                    <div class="storyboardNotesField">
+                      <label for="sbNotesLocation">Location</label>
+                      <input id="sbNotesLocation" class="input" type="text" maxlength="120" placeholder="Es. Interno cucina / Esterno strada" />
+                    </div>
+                    <div class="storyboardNotesField">
+                      <label for="sbNotesCharacters">Personaggi</label>
+                      <input id="sbNotesCharacters" class="input" type="text" maxlength="160" placeholder="Es. Marta, Luca, Cliente" />
+                    </div>
+                  </div>
+                  <div class="storyboardNotesStack">
+                    <div class="storyboardNotesField">
+                      <label for="sbNotesDescription">Descrizione shot</label>
+                      <textarea id="sbNotesDescription" class="input storyboardNotesTextarea" rows="3" maxlength="1200" placeholder="Cosa vediamo nell'inquadratura, azione principale, composizione, intenzione visiva..."></textarea>
+                    </div>
+                    <div class="storyboardNotesField">
+                      <label for="sbNotesDialogue">Dialoghi</label>
+                      <textarea id="sbNotesDialogue" class="input storyboardNotesTextarea" rows="3" maxlength="1200" placeholder="Battute, voice over, testo parlato..."></textarea>
+                    </div>
+                    <div class="storyboardNotesField">
+                      <label for="sbNotesCamera">Camera/Video</label>
+                      <textarea id="sbNotesCamera" class="input storyboardNotesTextarea" rows="3" maxlength="1200" placeholder="Tipo inquadratura, movimento camera, ottica, asse, ritmo, indicazioni visive..."></textarea>
+                    </div>
+                    <div class="storyboardNotesField">
+                      <label for="sbNotesAudio">Audio</label>
+                      <textarea id="sbNotesAudio" class="input storyboardNotesTextarea" rows="3" maxlength="1200" placeholder="Musica, rumori, ambiente, fx, tono audio..."></textarea>
+                    </div>
+                    <div class="storyboardNotesField">
+                      <label for="sbNotesExtra">Note libere</label>
+                      <textarea id="sbNotesExtra" class="input storyboardNotesTextarea" rows="4" maxlength="1600" placeholder="Appunti vari, dettagli di regia, produzione, riferimenti..."></textarea>
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </div>
+            <div class="card storyboardShotsCard">
+              <div class="storyboardShotsHeader">
+                <div>
+                  <h3>Inquadrature</h3>
+                  <p class="muted storyboardMeta">Scena corrente: <span id="sbShotCount">1 shot</span></p>
+                </div>
+                <div class="storyboardShotActions">
+                  <button class="btnSmall" id="sbAddShot" type="button">+ Nuova</button>
+                  <button class="btnSmall" id="sbDuplicateShot" type="button">Duplica</button>
+                  <button class="btnSmall" id="sbDeleteShot" type="button">Elimina</button>
+                </div>
+              </div>
+
+              <div id="sbShotList" class="storyboardShotList" aria-label="Elenco inquadrature"></div>
+            </div>
+          </div>
+        </div>
+
+        <dialog id="sbLibraryDialog" class="dialog storyboardLibraryDialog">
+          <form method="dialog" class="dialog__form" id="sbLibraryForm">
+            <div class="storyboardLibraryHeader">
+              <div>
+                <h3>Archivio Storyboard</h3>
+              </div>
+              <button class="chip chip--button" id="sbLibraryClose" type="button">Chiudi</button>
+            </div>
+            <div class="storyboardLibraryTools">
+              <div class="storyboardLibraryStatus muted" id="sbLibraryStatus">Nessuno storyboard salvato.</div>
+            </div>
+            <div id="sbLibraryList" class="storyboardLibraryList"></div>
+          </form>
+        </dialog>
+
+      </section>
+      <!-- LESSONS (vuoto) -->
+      <section class="panel" data-panel="lessons">
+        <h1>Lezioni ONLINE</h1>
+        <p class="muted">Sezione provvisoria. Qui inserirai i video YouTube non in elenco.</p>
+      </section>
+
+      <!-- DICTIONARY (minimale) -->
+      <section class="panel" data-panel="dictionary">
+        <div class="panel__header">
+          <h1>Dizionario del videomaker</h1>
+          <div class="panel__actions">
+            <input id="dictSearch" class="input" type="search" placeholder="Cerca un termine (es. montaggio, ISO, clap)..." />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="alphabet" id="dictAlphabet" aria-label="Indice alfabetico"></div>
+        </div>
+
+        <div class="card">
+          <div id="dictResults" class="dictResults"></div>
+        </div>
+      </section>
+
+      <!-- NOTEBOOK (taccuino film) -->
+      <section class="panel" data-panel="notebook">
+        <div class="panel__header">
+          <h1>Taccuino film</h1>
+          <div class="panel__actions nbTopActions">
+            <button class="chip chip--primary" id="nbAdd" type="button">Aggiungi nuovo</button>
+            <button class="chip chip--button" id="nbShare" type="button">Condividi lista</button>
+            <button class="chip chip--button" id="nbReceived" type="button">Liste ricevute</button>
+          </div>
+        </div>
+
+        <div class="card nbNotebookCard">
+          <div class="nbSectionHead">
+            <h3>Elenco personale</h3>
+            <div class="nbSectionHeadActions">
+              <div class="nbSearchWrap">
+                <label class="sr-only" for="nbQuery">Cerca film</label>
+                <input id="nbQuery" class="input nbSearchInput" type="search" placeholder="Cerca titolo, note, regista o anno..." />
+              </div>
+            </div>
+          </div>
+          <div id="nbSummary" class="nbSummary" aria-live="polite"></div>
+          <div id="nbList" class="nbList"></div>
+        </div>
+
+        <input id="nbImportFile" type="file" accept="application/json,.json" hidden />
+
+        <!-- Modal semplice -->
+        <dialog id="nbDialog" class="dialog">
+          <form method="dialog" id="nbForm" class="dialog__form">
+            <h3 id="nbDialogTitle">Nuovo film</h3>
+
+            <input type="hidden" id="nbId" />
+
+            <div class="formRow">
+              <label for="nbTitle">Titolo</label>
+              <input id="nbTitle" class="input" required placeholder="Es. La dolce vita" />
+            </div>
+
+            <div class="formRow">
+              <label for="nbStatus">Stato</label>
+              <select id="nbStatus" class="input">
+                <option value="towatch" selected>Da vedere</option>
+                <option value="watched">Visto</option>
+              </select>
+            </div>
+
+            <div class="formRow">
+              <label for="nbDirector">Regista</label>
+              <input id="nbDirector" class="input" type="text" maxlength="120" placeholder="Es. Federico Fellini" />
+            </div>
+
+            <div class="formRow">
+              <label for="nbYear">Anno</label>
+              <input id="nbYear" class="input" type="number" min="1888" max="2100" step="1" placeholder="Es. 1960" />
+            </div>
+
+            <div class="formRow">
+              <label for="nbRating">Valutazione (0–5)</label>
+              <input id="nbRating" class="input" type="number" min="0" max="5" step="0.5" value="0" />
+            </div>
+
+            <div class="formRow">
+              <label for="nbNotes">Note</label>
+              <textarea id="nbNotes" class="input" rows="4" placeholder="Perché lo vuoi vedere? Scene/tecniche da studiare…"></textarea>
+            </div>
+
+            <div class="dialog__actions">
+              <button class="chip chip--button" value="cancel" type="button" id="nbCancel">Annulla</button>
+              <button class="chip chip--primary" value="save" type="submit">Salva</button>
+            </div>
+          </form>
+        </dialog>
+
+        <dialog id="nbShareDialog" class="dialog">
+          <form method="dialog" class="dialog__form" id="nbShareForm">
+            <div class="nbDialogHead">
+              <h3>Condividi lista</h3>
+              <button class="chip chip--button" type="button" id="nbShareClose">Chiudi</button>
+            </div>
+            <div class="formRow">
+              <label for="nbShareTitle">Titolo lista</label>
+              <input id="nbShareTitle" class="input" placeholder="Es. Taccuino film – Lista personale" />
+            </div>
+            <div class="formRow">
+              <label for="nbShareOwner">Autore</label>
+              <input id="nbShareOwner" class="input" placeholder="Es. Utente SDAC" />
+            </div>
+            <div class="card nbDialogCard">
+              <div class="nbDialogPreviewTitle">Anteprima condivisione</div>
+              <div id="nbShareSummary" class="nbDialogSummary muted"></div>
+            </div>
+            <div class="dialog__actions nbDialogActionsWrap">
+              <button class="chip chip--button" type="button" id="nbCopyText">Copia testo</button>
+              <button class="chip chip--button" type="button" id="nbDownloadJson">Scarica JSON</button>
+              <button class="chip chip--primary" type="button" id="nbNativeShare">Condividi</button>
+            </div>
+          </form>
+        </dialog>
+
+        <dialog id="nbReceivedDialog" class="dialog nbDialogWide">
+          <form method="dialog" class="dialog__form" id="nbReceivedForm">
+            <div class="nbDialogHead">
+              <h3>Liste ricevute</h3>
+              <div class="nbDialogHeadActions">
+                <button class="chip chip--button" type="button" id="nbImportList">Apri/Aggiungi lista</button>
+                <button class="chip chip--button" type="button" id="nbReceivedClose">Chiudi</button>
+              </div>
+            </div>
+            <div id="nbReceivedSummary" class="muted nbDialogSummary"></div>
+            <div id="nbReceivedList" class="nbReceivedList"></div>
+          </form>
+        </dialog>
+
+        <dialog id="nbListPreviewDialog" class="dialog nbDialogWide">
+          <form method="dialog" class="dialog__form" id="nbListPreviewForm">
+            <div class="nbDialogHead">
+              <div>
+                <h3 id="nbListPreviewTitle">Lista ricevuta</h3>
+                <div id="nbListPreviewMeta" class="muted nbDialogSummary"></div>
+              </div>
+              <div class="nbDialogHeadActions">
+                <button class="chip chip--primary" type="button" id="nbPreviewAdd">Aggiungi alla mia lista</button>
+                <button class="chip chip--button" type="button" id="nbListPreviewClose">Chiudi</button>
+              </div>
+            </div>
+            <div id="nbListPreviewItems" class="nbPreviewItems"></div>
+          </form>
+        </dialog>
+      </section>
+
+      <!-- SHOP (vuoto) -->
+      <section class="panel" data-panel="shop">
+        <h1>Shopping</h1>
+        <p class="muted">Sezione provvisoria. Qui mostrerai gadget e prodotti SDAC.</p>
+      </section>
+    </section>
+  </main>
+
+  <!-- Overlay impostazioni -->
+  <div class="overlay" id="overlay" hidden>
+    <div class="overlay__panel">
+      <div class="overlay__header">
+        <h2 id="overlayTitle">Impostazioni</h2>
+        <button class="chip chip--button" id="overlayClose" type="button">Chiudi</button>
+      </div>
+      <div class="overlay__body" id="overlayBody"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/storyboard.js"></script>
+  <script src="js/dictionary.js"></script>
+  <script src="js/notebook.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <!-- Librerie per export PDF identico all’anteprima (Step 4) -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="js/production.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      var menuHeader = document.getElementById('toolsMenuHeader');
+      var menuToggle = document.getElementById('menuToggle');
+      if (!menuHeader || !menuToggle) return;
+
+      var triggerToggle = function(){
+        menuToggle.click();
+      };
+
+      menuHeader.addEventListener('click', function(event){
+        if (event.target.closest('#menuToggle')) return;
+        triggerToggle();
+      });
+    });
+  </script>
+</body>
+</html>
