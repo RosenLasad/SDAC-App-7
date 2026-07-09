@@ -1,6 +1,8 @@
 (() => {
   const menuButtons = Array.from(document.querySelectorAll(".menu__item"));
   const panels = Array.from(document.querySelectorAll(".panel"));
+  const toolsMenu = document.getElementById("toolsMenu");
+  const toolsMenuLauncher = document.getElementById("toolsMenuLauncher");
   const menuToggle = document.getElementById("menuToggle");
   const menuToggleDesktop = document.getElementById("menuToggleDesktop");
   const menuToggleMobile = document.getElementById("menuToggleMobile");
@@ -234,27 +236,78 @@
     return "";
   }
 
+  function getAccountInitials(label) {
+    const cleaned = String(label || "").trim();
+    if (!cleaned) return "👤";
+
+    const words = cleaned
+      .replace(/@.*/, "")
+      .split(/[\s._-]+/)
+      .map((part) => part.trim())
+      .filter(Boolean);
+
+    if (words.length >= 2) return `${words[0][0] || ""}${words[1][0] || ""}`.toUpperCase();
+    return cleaned.slice(0, 2).toUpperCase();
+  }
+
+  function getAccountStatusClass(plan, authenticated) {
+    if (!authenticated) return "disconnected";
+    if (plan === "admin") return "admin";
+    if (plan === "premium") return "premium";
+    if (plan === "premium_pending") return "pending";
+    return "connected";
+  }
+
+  function setTopbarAccountButton({ label, statusClass, title, cardText, ariaLabel }) {
+    if (!topbarAccount) return;
+
+    topbarAccount.hidden = false;
+    topbarAccount.classList.remove(
+      "topbarAccount--disconnected",
+      "topbarAccount--connected",
+      "topbarAccount--premium",
+      "topbarAccount--pending",
+      "topbarAccount--admin"
+    );
+    topbarAccount.classList.add(`topbarAccount--${statusClass}`);
+    topbarAccount.innerHTML = `
+      <span class="topbarAccount__avatar" aria-hidden="true">${escapeHtml(label)}</span>
+      <span class="topbarAccount__status" aria-hidden="true"></span>
+    `;
+    topbarAccount.title = title;
+    topbarAccount.setAttribute("aria-label", ariaLabel);
+    topbarAccount.setAttribute("data-account-card", cardText);
+  }
+
   function updateTopbarAccountUi() {
     if (!topbarAccount) return;
 
     const disconnectedLabel = "Utente non collegato";
 
     if (!isAuthenticated()) {
-      topbarAccount.hidden = false;
-      topbarAccount.textContent = disconnectedLabel;
-      topbarAccount.title = `${disconnectedLabel} • Apri pannello Utente`;
-      topbarAccount.setAttribute("aria-label", "Apri pannello Utente");
-      topbarAccount.classList.add("topbarAccount--disconnected");
+      setTopbarAccountButton({
+        label: "👤",
+        statusClass: "disconnected",
+        title: `${disconnectedLabel} • Apri pannello Utente`,
+        cardText: `Utente
+● Non collegato
+Tocca per accedere`,
+        ariaLabel: "Apri pannello Utente: utente non collegato"
+      });
       return;
     }
 
     const compactLabel = getCompactAccountLabel();
     if (!compactLabel) {
-      topbarAccount.hidden = false;
-      topbarAccount.textContent = disconnectedLabel;
-      topbarAccount.title = `${disconnectedLabel} • Apri pannello Utente`;
-      topbarAccount.setAttribute("aria-label", "Apri pannello Utente");
-      topbarAccount.classList.add("topbarAccount--disconnected");
+      setTopbarAccountButton({
+        label: "👤",
+        statusClass: "disconnected",
+        title: `${disconnectedLabel} • Apri pannello Utente`,
+        cardText: `Utente
+● Non collegato
+Tocca per accedere`,
+        ariaLabel: "Apri pannello Utente: utente non collegato"
+      });
       return;
     }
 
@@ -262,18 +315,24 @@
     const fullName = String(authProfile?.full_name || "").trim();
     const username = String(authProfile?.username || "").trim();
     const email = String(authProfile?.email || authSession?.user?.email || "").trim();
+    const planLabel = getPlanLabel(effectiveState.plan);
+    const displayName = fullName || username || compactLabel;
     const titleParts = [
-      fullName || compactLabel,
+      displayName,
       username ? `@${username}` : "",
       email,
-      `Piano: ${getPlanLabel(effectiveState.plan)}`
+      `Piano: ${planLabel}`
     ].filter(Boolean);
 
-    topbarAccount.hidden = false;
-    topbarAccount.textContent = compactLabel;
-    topbarAccount.title = `${titleParts.join(" • ")} • Apri pannello Utente`;
-    topbarAccount.setAttribute("aria-label", `Apri pannello Utente: ${compactLabel}`);
-    topbarAccount.classList.remove("topbarAccount--disconnected");
+    setTopbarAccountButton({
+      label: getAccountInitials(displayName),
+      statusClass: getAccountStatusClass(effectiveState.plan, true),
+      title: `${titleParts.join(" • ")} • Apri pannello Utente`,
+      cardText: `${displayName}
+● Collegato
+Piano: ${planLabel}`,
+      ariaLabel: `Apri pannello Utente: ${displayName}, piano ${planLabel}`
+    });
   }
 
   function updatePremiumUi() {
@@ -484,18 +543,24 @@ function showView(view) {
   if (view === "home") renderHomeRecentItems();
 }
   function applyMenuState(collapsed) {
+    document.body.classList.toggle("tools-menu-open", !collapsed);
     document.body.classList.toggle("menu-collapsed", collapsed);
 
+    if (toolsMenuLauncher) {
+      toolsMenuLauncher.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      toolsMenuLauncher.setAttribute("aria-label", collapsed ? "Apri elenco Strumenti" : "Chiudi elenco Strumenti");
+      toolsMenuLauncher.title = collapsed ? "Apri elenco Strumenti" : "Chiudi elenco Strumenti";
+    }
     if (menuToggle) {
       menuToggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
-      menuToggle.setAttribute("aria-label", collapsed ? "Apri pannello Strumenti" : "Chiudi pannello Strumenti");
-      menuToggle.title = collapsed ? "Apri pannello Strumenti" : "Chiudi pannello Strumenti";
+      menuToggle.setAttribute("aria-label", collapsed ? "Apri elenco Strumenti" : "Chiudi elenco Strumenti");
+      menuToggle.title = collapsed ? "Apri elenco Strumenti" : "Chiudi elenco Strumenti";
     }
     if (menuToggleDesktop) {
-      menuToggleDesktop.textContent = collapsed ? "▶" : "◀";
+      menuToggleDesktop.textContent = collapsed ? "☰" : "×";
     }
     if (menuToggleMobile) {
-      menuToggleMobile.textContent = collapsed ? "▼" : "▲";
+      menuToggleMobile.textContent = collapsed ? "☰" : "×";
     }
   }
 
@@ -1105,7 +1170,7 @@ function showView(view) {
               <li>Taccuino film con lista personale, preferiti e lista SDAC</li>
               <li>Piano di Produzione con 1 progetto salvabile</li>
               <li>Storyboard e Decoupage con 1 progetto salvabile</li>
-              <li>Anteprime e presentazione delle Lezioni ONLINE</li>
+              <li>Anteprime e presentazione di Cinema in azione</li>
               <li>Accesso completo a Shopping</li>
             </ul>
           </article>
@@ -1124,12 +1189,12 @@ function showView(view) {
           </article>
 
           <article class="subCard subCard--lessons">
-            <div class="subCard__badge">Lezioni ONLINE</div>
-            <h4>Lezioni e corsi</h4>
+            <div class="subCard__badge">Cinema in azione</div>
+            <h4>Moduli online dei corsi</h4>
             <ul class="subList">
-              <li>Anteprime e presentazione delle lezioni</li>
+              <li>Anteprime e presentazione dei moduli</li>
               <li>Possibili vantaggi o sconti per gli abbonati</li>
-              <li>Lezioni complete e corsi acquistabili separatamente</li>
+              <li>Moduli completi e percorsi acquistabili separatamente</li>
             </ul>
           </article>
         </section>
@@ -1711,30 +1776,51 @@ function showView(view) {
   };
   window.SDACMembership = membershipApi;
 
-  try {
-    menuCollapsed = localStorage.getItem(MENU_COLLAPSED_KEY) === "1";
-  } catch (err) {
-    menuCollapsed = false;
-  }
+  // Nuova interfaccia: il menu Strumenti resta chiuso e si apre dal logo SDAC App.
+  menuCollapsed = true;
   applyMenuState(menuCollapsed);
 
-  if (menuToggle) {
-    menuToggle.addEventListener("click", () => {
-      menuCollapsed = !menuCollapsed;
-      applyMenuState(menuCollapsed);
-      try {
-        localStorage.setItem(MENU_COLLAPSED_KEY, menuCollapsed ? "1" : "0");
-      } catch (err) {
-        // ignore storage errors
-      }
+  function toggleToolsMenu(forceOpen) {
+    const nextOpen = typeof forceOpen === "boolean" ? forceOpen : menuCollapsed;
+    menuCollapsed = !nextOpen;
+    applyMenuState(menuCollapsed);
+  }
+
+  if (toolsMenuLauncher) {
+    toolsMenuLauncher.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleToolsMenu();
     });
   }
+
+  if (menuToggle) {
+    menuToggle.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleToolsMenu();
+    });
+  }
+
+  document.addEventListener("click", (event) => {
+    if (menuCollapsed) return;
+    const target = event.target;
+    if (toolsMenu?.contains(target) || toolsMenuLauncher?.contains(target)) return;
+    toggleToolsMenu(false);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !menuCollapsed) toggleToolsMenu(false);
+  });
 
   const initial = (window.location.hash || "#home").replace("#", "");
   showView(panels.some((p) => p.dataset.panel === initial) ? initial : "home");
 
   menuButtons.forEach((btn) => {
-    btn.addEventListener("click", () => showView(btn.dataset.view));
+    btn.addEventListener("click", () => {
+      showView(btn.dataset.view);
+      toggleToolsMenu(false);
+    });
   });
 
   document.addEventListener("click", (event) => {
@@ -1754,9 +1840,45 @@ function showView(view) {
     }
   });
 
-  document.getElementById("topbarAccount")?.addEventListener("click", () => {
-    openUserOverlay();
-  });
+  if (topbarAccount) {
+    let accountPressTimer = null;
+    let accountLongPressActive = false;
+
+    const clearAccountPress = () => {
+      if (accountPressTimer) {
+        window.clearTimeout(accountPressTimer);
+        accountPressTimer = null;
+      }
+    };
+
+    topbarAccount.addEventListener("pointerdown", () => {
+      clearAccountPress();
+      accountLongPressActive = false;
+      accountPressTimer = window.setTimeout(() => {
+        accountLongPressActive = true;
+        topbarAccount.classList.add("is-card-visible");
+      }, 520);
+    });
+
+    ["pointerup", "pointercancel", "pointerleave", "blur"].forEach((eventName) => {
+      topbarAccount.addEventListener(eventName, () => {
+        clearAccountPress();
+        if (eventName !== "pointerleave") {
+          window.setTimeout(() => topbarAccount.classList.remove("is-card-visible"), 900);
+        }
+      });
+    });
+
+    topbarAccount.addEventListener("click", (event) => {
+      if (accountLongPressActive) {
+        event.preventDefault();
+        accountLongPressActive = false;
+        return;
+      }
+      topbarAccount.classList.remove("is-card-visible");
+      openUserOverlay();
+    });
+  }
 
   document.getElementById("btnSettings")?.addEventListener("click", () => {
     openSettingsOverlay();
