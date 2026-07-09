@@ -1,0 +1,44 @@
+/* Cinema in azione - prototipo moduli online SDAC */
+.cinemaAction{ display:grid; gap:18px; }
+.cinemaActionHero{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; background:radial-gradient(700px 260px at 20% 0%, var(--tool-bg-strong), transparent 70%), var(--card); }
+.cinemaActionHero h1{ margin:4px 0 8px; }
+.cinemaActionEyebrow{ margin:0; color:var(--tool-color); text-transform:uppercase; letter-spacing:.08em; font-size:12px; font-weight:900; }
+.cinemaActionInfo{ position:relative; border-color:var(--tool-border); background:var(--tool-bg); }
+.cinemaActionInfo__close{ position:absolute; top:12px; right:12px; width:34px; height:34px; border-radius:999px; border:1px solid var(--tool-border); background:rgba(0,0,0,.18); color:var(--text); font-size:22px; cursor:pointer; }
+.cinemaActionSectionHead{ display:flex; justify-content:space-between; gap:14px; align-items:end; margin-bottom:12px; }
+.cinemaActionSectionHead h2{ margin:0; }
+.cinemaActionSectionHead p{ margin:0; max-width:560px; }
+.cinemaActionModules{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; }
+.ciaModuleCard{ min-height:190px; display:flex; flex-direction:column; align-items:flex-start; text-align:left; gap:10px; border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:16px; color:var(--text); background:rgba(28,28,34,.78); box-shadow:var(--soft-inner); cursor:pointer; transition:transform .16s ease,border-color .16s ease,background .16s ease; }
+.ciaModuleCard:hover{ transform:translateY(-2px); border-color:var(--tool-border); background:var(--tool-bg); }
+.ciaModuleCard[disabled]{ cursor:not-allowed; opacity:.58; }
+.ciaModuleCard[disabled]:hover{ transform:none; border-color:rgba(255,255,255,.08); background:rgba(28,28,34,.78); }
+.ciaModuleIcon{ font-size:30px; line-height:1; }
+.ciaModuleCard strong{ font-size:17px; line-height:1.2; }
+.ciaModuleCard small{ color:var(--muted); line-height:1.45; }
+.ciaModuleStatus{ margin-top:auto; display:inline-flex; padding:5px 9px; border-radius:999px; border:1px solid var(--tool-border); background:rgba(0,0,0,.18); color:var(--text); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; }
+.cinemaActionWorkspace{ display:grid; gap:14px; }
+.ciaBackRow{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.ciaCategories{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+.ciaCategoryCard{ min-height:176px; display:flex; flex-direction:column; align-items:flex-start; text-align:left; gap:10px; border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:16px; background:rgba(28,28,34,.78); color:var(--text); cursor:pointer; transition:transform .16s ease,border-color .16s ease,background .16s ease; }
+.ciaCategoryCard:hover{ transform:translateY(-2px); border-color:var(--tool-border); background:var(--tool-bg); }
+.ciaCategoryIcon{ font-size:28px; }
+.ciaCategoryProgress{ margin-top:auto; color:var(--muted); font-size:12px; }
+.ciaLevels{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+.ciaLevelBtn{ display:flex; flex-direction:column; gap:5px; align-items:flex-start; border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:14px; color:var(--text); background:rgba(5,5,8,.32); cursor:pointer; }
+.ciaLevelBtn:hover{ border-color:var(--tool-border); background:var(--tool-bg); }
+.ciaLevelBtn.is-complete{ border-color:rgba(34,197,94,.45); background:rgba(34,197,94,.10); }
+.ciaQuestionCard{ display:grid; gap:14px; border-color:var(--tool-border); }
+.ciaQuestionTop{ display:flex; justify-content:space-between; gap:10px; align-items:start; }
+.ciaQuestionTitle{ margin:0; font-size:22px; line-height:1.25; }
+.ciaAnswerGrid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.ciaAnswerBtn{ text-align:left; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,.10); background:rgba(5,5,8,.30); color:var(--text); cursor:pointer; line-height:1.45; }
+.ciaAnswerBtn:hover{ border-color:var(--tool-border); background:var(--tool-bg); }
+.ciaAnswerBtn.is-correct{ border-color:rgba(34,197,94,.65); background:rgba(34,197,94,.14); }
+.ciaAnswerBtn.is-wrong{ border-color:rgba(248,113,113,.65); background:rgba(248,113,113,.12); }
+.ciaFeedback{ padding:14px; border-radius:16px; border:1px solid var(--tool-border); background:var(--tool-bg); line-height:1.55; }
+.ciaResultScore{ font-size:42px; font-weight:900; color:var(--tool-color); line-height:1; }
+.ciaResultActions{ display:flex; flex-wrap:wrap; gap:10px; }
+.ciaMiniTag{ display:inline-flex; padding:5px 8px; border-radius:999px; border:1px solid rgba(255,255,255,.10); color:var(--muted); font-size:12px; }
+@media (max-width:1100px){ .cinemaActionModules{ grid-template-columns:repeat(3,minmax(0,1fr)); } .ciaCategories{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:720px){ .cinemaActionHero,.cinemaActionSectionHead,.ciaBackRow,.ciaQuestionTop{ flex-direction:column; align-items:stretch; } .cinemaActionModules,.ciaCategories,.ciaLevels,.ciaAnswerGrid{ grid-template-columns:1fr; } }
