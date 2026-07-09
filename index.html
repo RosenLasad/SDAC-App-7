@@ -13,6 +13,7 @@
   <link rel="icon" href="assets/icon-app-192.png" sizes="192x192" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="cinema-in-azione/cinema-in-azione.css" />
 </head>
 <body>
   <header class="topbar">
@@ -26,9 +27,11 @@
     </div>
 
     <div class="topbar__center">
-      <!-- Metterai tu l’immagine in /assets -->
-      <img class="brand" src="assets/sdac-app-title.png" alt="SDAC App" onerror="this.style.display='none'; document.querySelector('.brandFallback').style.display='block';" />
-      <div class="brandFallback" style="display:none;">SDAC App</div>
+      <!-- Logo cliccabile: apre il menu Strumenti -->
+      <button class="brandButton" id="toolsMenuLauncher" type="button" aria-label="Apri elenco Strumenti" aria-expanded="false" aria-controls="toolsMenu">
+        <img class="brand" src="assets/sdac-app-title.png" alt="SDAC App" onerror="this.style.display='none'; document.querySelector('.brandFallback').style.display='block';" />
+        <span class="brandFallback" style="display:none;">SDAC App</span>
+      </button>
     </div>
 
     <div class="topbar__right">
@@ -58,7 +61,7 @@
           <button class="menu__item" data-view="home">Menu principale</button>
           <button class="menu__item" data-view="start">Inizia Produzione</button>
           <button class="menu__item" data-view="storyboard">Storyboard</button>
-          <button class="menu__item" data-view="lessons">Lezioni ONLINE</button>
+          <button class="menu__item" data-view="lessons">Cinema in azione</button>
           <button class="menu__item" data-view="dictionary">Dizionario del videomaker</button>
           <button class="menu__item" data-view="notebook">Taccuino film</button>
           <button class="menu__item" data-view="shop">Shopping</button>
@@ -139,10 +142,10 @@
               </button>
 
               <button class="card homeToolCard homeToolCard--lessons" type="button" data-view-jump="lessons">
-                <span class="homeToolIcon" aria-hidden="true">▶</span>
+                <span class="homeToolIcon" aria-hidden="true">🎬</span>
                 <span class="homeToolText">
-                  <strong>Lezioni ONLINE</strong>
-                  <small>Spazio per video riservati, materiali e percorsi didattici.</small>
+                  <strong>Cinema in azione</strong>
+                  <small>Quiz didattici, sfide e percorsi pratici per mettere alla prova le competenze di cinema.</small>
                 </span>
               </button>
 
@@ -1134,10 +1137,35 @@
         </dialog>
 
       </section>
-      <!-- LESSONS (vuoto) -->
+      <!-- CINEMA IN AZIONE -->
       <section class="panel" data-panel="lessons">
-        <h1>Lezioni ONLINE</h1>
-        <p class="muted">Sezione provvisoria. Qui inserirai i video YouTube non in elenco.</p>
+        <div class="cinemaAction" id="cinemaActionApp">
+          <div class="cinemaActionHero card">
+            <div>
+              <p class="cinemaActionEyebrow">Moduli online dei corsi</p>
+              <h1>Cinema in azione</h1>
+              <p class="lead">Quiz didattici, sfide e percorsi pratici per testare e allenare le competenze di cinema.</p>
+            </div>
+            <button class="chip chip--button" id="ciaInfoBtn" type="button">Info</button>
+          </div>
+
+          <div class="cinemaActionInfo card" id="ciaInfoPanel" hidden>
+            <button class="cinemaActionInfo__close" id="ciaInfoClose" type="button" aria-label="Chiudi info">×</button>
+            <h3>Cos'è Cinema in azione</h3>
+            <p class="muted">Cinema in azione è lo spazio dei moduli online SDAC: un percorso a quiz pensato per capire quanto sai già, imparare dagli errori e allenarti con domande pratiche divise per corso, categoria e livello di difficoltà.</p>
+            <p class="muted">In questa versione demo è attivo solo il modulo <strong>Regia</strong>. Gli altri moduli sono già visibili come anteprima.</p>
+          </div>
+
+          <section class="cinemaActionSection" aria-labelledby="ciaModulesTitle">
+            <div class="cinemaActionSectionHead">
+              <h2 id="ciaModulesTitle">Scegli un modulo</h2>
+              <p class="muted">Per ora puoi aprire Regia. Gli altri moduli saranno preparati più avanti.</p>
+            </div>
+            <div class="cinemaActionModules" id="ciaModules"></div>
+          </section>
+
+          <section class="cinemaActionWorkspace" id="ciaWorkspace" aria-live="polite"></section>
+        </div>
       </section>
 
       <!-- DICTIONARY (minimale) -->
@@ -1310,6 +1338,9 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="js/app.js"></script>
+  <script src="cinema-in-azione/data/modules.js"></script>
+  <script src="cinema-in-azione/data/regia.js"></script>
+  <script src="cinema-in-azione/cinema-in-azione.js"></script>
   <script src="js/storyboard.js"></script>
   <script src="js/dictionary.js"></script>
   <script src="js/notebook.js"></script>
@@ -1318,21 +1349,5 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="js/production.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function(){
-      var menuHeader = document.getElementById('toolsMenuHeader');
-      var menuToggle = document.getElementById('menuToggle');
-      if (!menuHeader || !menuToggle) return;
-
-      var triggerToggle = function(){
-        menuToggle.click();
-      };
-
-      menuHeader.addEventListener('click', function(event){
-        if (event.target.closest('#menuToggle')) return;
-        triggerToggle();
-      });
-    });
-  </script>
 </body>
 </html>
